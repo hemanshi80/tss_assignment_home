@@ -1,0 +1,14 @@
+package com.tss.test;
+
+import com.tss.model.CreditCard2;
+import com.tss.model.IPayment;
+import com.tss.model.ShoppingCart2;
+
+public class TestWithoutDip {
+
+	public static void main(String[] args) {
+        IPayment payment = new CreditCard2(); 
+        ShoppingCart2 cart = new ShoppingCart2(payment);
+        cart.checkout(500);
+    }
+}

@@ -1,0 +1,75 @@
+package com.tss.model;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+public class Order implements Serializable{
+
+	 private int id;
+	 private Date date;
+	 private List<LineItem> items;
+	 
+	 
+	 public Order(int id, Date date, List<LineItem> items) {
+		super();
+		this.id = id;
+		this.date = date;
+		this.items = items;
+	 }
+
+
+	 public int getId() {
+		 return id;
+	 }
+
+
+	 public Date getDate() {
+		 return date;
+	 }
+
+
+	 public List<LineItem> getItems() {
+		 return items;
+	 }
+	 
+	 
+	 
+	 public void addItem(LineItem item) {
+	        items.add(item);
+	    }
+
+	public double calculateOrderPrice() {
+	return items.stream().mapToDouble(LineItem::getTotalCost).sum();
+	    }
+	
+	 
+	public void displayOrder() {
+	    System.out.println("\n********** BILL **********");
+	    System.out.println("Order ID: " + id);
+	    System.out.println("Order Date: " + date);
+
+	    System.out.printf("%-5s %-12s %-8s %-10s %-12s %-18s %-12s%n",
+	            "No", "Product ID", "Item", "Qty", "Unit Price", "Discount %", "Total");
+
+	    int count = 1;
+	    for (LineItem item : items) {
+	        Product p = item.getProduct();
+	        double unitPrice = p.getPrice();
+	        double discount = p.getDiscountPercent();
+	        double discountedPrice = p.getDiscountedPrice();
+	        double total = item.getTotalCost();
+
+	        System.out.printf("%-5d %-12d %-8s %-10d %-12.2f %-18.2f %-12.2f%n",
+	                count++, p.getId(), p.getName(), item.getQuantity(),
+	                unitPrice, discount, total);
+	    }
+
+	    System.out.println("Total Order Price: " + calculateOrderPrice());
+	}
+
+
+	
+
+	 
+}

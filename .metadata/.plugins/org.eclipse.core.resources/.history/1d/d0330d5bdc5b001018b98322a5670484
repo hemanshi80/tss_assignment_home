@@ -1,0 +1,10 @@
+package com.tss.model;
+
+public abstract class Bird {
+	
+	void fly()
+	{
+		
+	}
+
+}

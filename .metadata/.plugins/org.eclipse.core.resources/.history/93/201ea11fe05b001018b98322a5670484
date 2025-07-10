@@ -1,0 +1,5 @@
+package ips_solid;
+
+public interface IWorker {
+
+}

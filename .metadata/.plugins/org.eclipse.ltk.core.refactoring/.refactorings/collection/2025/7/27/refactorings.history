@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;com.tss.model.SalaryComparator&apos; to &apos;NameComparator&apos;&#x0D;&#x0A;- Original project: &apos;collection&apos;&#x0D;&#x0A;- Original element: &apos;com.tss.model.SalaryComparator&apos;&#x0D;&#x0A;- Renamed element: &apos;com.tss.model.NameComparator&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;SalaryComparator&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;com.tss.model{SalaryComparator.java[SalaryComparator" matchStrategy="1" name="NameComparator" qualified="false" references="true" similarDeclarations="false" stamp="1751536573719" textual="false" version="1.0"/>
+</session>

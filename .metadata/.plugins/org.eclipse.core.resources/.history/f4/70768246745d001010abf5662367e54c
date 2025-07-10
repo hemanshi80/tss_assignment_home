@@ -1,0 +1,15 @@
+package com.tss.creational.factory.test;
+
+import com.tss.creational.factory.model.CarFactory;
+import com.tss.creational.factory.model.CarType;
+
+public class CarFactoryTest {
+
+	public static void main(String[] args) {
+		
+		CarFactory factory = new CarFactory();
+		ICar Maruti = factory.makeCars(CarType.Maruti);
+
+	}
+
+}

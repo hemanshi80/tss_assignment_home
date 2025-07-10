@@ -1,0 +1,47 @@
+package com.tss.model;
+
+import java.io.Serializable;
+
+public class LineItem implements Serializable {
+	
+	private int id;
+    private int quantity;
+    private Product product;
+    
+    
+	public LineItem(int id, int quantity, Product product) {
+		super();
+		this.id = id;
+		this.quantity = quantity;
+		this.product = product;
+	}
+
+
+	public int getId() {
+		return id;
+	}
+
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+
+	public Product getProduct() {
+		return product;
+	}
+    
+	
+	 @Override
+	public String toString() {
+		return "LineItem [id=" + id + ", quantity=" + quantity + ", product=" + product + "]";
+	}
+
+
+	 public double getTotalCost() {
+	        return product.getDiscountedPrice() * quantity;
+	    }
+	 
+	 
+
+}

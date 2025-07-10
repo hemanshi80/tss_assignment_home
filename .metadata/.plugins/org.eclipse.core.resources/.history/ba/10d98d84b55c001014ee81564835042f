@@ -1,0 +1,34 @@
+package com.tss.test;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
+
+import com.tss.model.Student;
+
+public class StudentTest {
+
+	public static void main(String[] args) {
+		
+		List<Student> student = Arrays.aslist(
+			
+				new Student("a",1,80),
+				new Student ("b",2,90),
+				new Student ("c",3,90),
+				new Student ("d",4,90),
+				new Student ("e",5,90),
+				new Student ("f",6,90),
+				new Student ("g",7,90),
+				new Student ("d",8,90),
+				new Student ("n",9,90),
+				new Student ("m",10,90)
+	);
+		
+	Predicate<Student> isScore = students -> students.getMarks() > 75;
+	
+	Consumer<Student> congrats = students -> 
+	System.out.println("Congratulation"+ students.getName()+ "your score" + students.getMarks);
+	
+	}
+
+}

@@ -1,0 +1,9 @@
+package com.tss.model;
+
+public class MovieListEmpty extends Exception {
+	
+	public MovieListEmpty(String message) {
+        super(message);
+    }
+
+}

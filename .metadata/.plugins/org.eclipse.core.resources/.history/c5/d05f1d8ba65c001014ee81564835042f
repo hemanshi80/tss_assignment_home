@@ -1,0 +1,13 @@
+package com.tss.test;
+
+import com.tss.model.DemoImpl;
+
+public class DemoTest {
+	
+	public static void main (String []args) {
+		
+		DemoImpl obj = new DemoImpl();
+		obj.display();
+	}
+
+}

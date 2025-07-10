@@ -1,0 +1,9 @@
+package com.tss.test;
+
+import com.tss.model.IAddition;
+
+public class AdditionTest {
+	
+	IAddition addition = (a,b)-> a+b;
+
+}

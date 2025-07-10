@@ -1,0 +1,16 @@
+package com.tss.test;
+
+import java.util.function.BiConsumer;
+
+public class AdditionTest {
+	
+	public static void main (String []args) {
+	
+		BiConsumer<Integer, Integer> addition = (a, b) -> {
+            int sum = a + b;
+            System.out.println("Addition of " + a + " + " + b + " : " + sum);
+        };
+
+        addition.accept(1, 3);  
+}
+}

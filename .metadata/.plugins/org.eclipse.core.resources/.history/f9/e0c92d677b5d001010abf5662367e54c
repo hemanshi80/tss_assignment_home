@@ -1,0 +1,19 @@
+package com.tss.creational.factory.model;
+
+import com.tss.creational.abstractfactory.model.ICar;
+
+public class Maruti implements ICar {
+
+	@Override
+	public void start() {
+		System.out.println("Maruti Started!!");
+		
+	}
+
+	@Override
+	public void stop() {
+		System.out.println("Maruti Stopped!!");
+		
+	}
+
+}

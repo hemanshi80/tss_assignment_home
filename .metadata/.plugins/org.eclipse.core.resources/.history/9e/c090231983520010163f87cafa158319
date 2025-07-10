@@ -1,0 +1,17 @@
+package com.tss.model.Inheritance.test;
+
+import com.tss.model.Inheritance.model.BoxWeight;
+
+public class BoxTest {
+
+	public static void main(String[] args) {
+
+		BoxWeight boxWeight = new BoxWeight();
+		boxWeight.initialize(10,50,80);
+		
+		boxWeight.display();
+
+		
+	}
+
+}

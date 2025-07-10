@@ -1,0 +1,8 @@
+package com.tss.model;
+
+public class Pigeon extends Bird{
+
+	void fly(){
+		System.out.println("Pigeon Fly");
+	}
+}

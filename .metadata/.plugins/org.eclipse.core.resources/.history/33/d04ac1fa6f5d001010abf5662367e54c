@@ -1,0 +1,10 @@
+package com.tss.creational.singleton.test;
+
+public class SingeltonTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

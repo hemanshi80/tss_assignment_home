@@ -1,0 +1,33 @@
+package com.tss.basics.loopingstatements;
+
+import java.util.Scanner;
+
+public class PrimeNumberPyramid {
+
+	public static void main(String[] args) {
+		
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Enter number of rows  :");
+		int rows_count = scanner.nextInt();
+		
+		int row = 1;
+		int num = 2;
+		
+		while (row <+ rows_count) {
+			int count = 0;
+			
+			while (count < row) {
+				int 1 =1;
+				int divisor_count = 0;
+				
+				while (i <= num) {
+					if (num%1 == 0) {
+						divisor_count++;
+					}
+				}
+			}
+		}
+	
+	}
+
+}
