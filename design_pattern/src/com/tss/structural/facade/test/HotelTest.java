@@ -1,0 +1,48 @@
+package com.tss.structural.facade.test;
+
+import java.util.Scanner;
+
+import com.tss.structural.facade.model.HotelReception;
+
+public class HotelTest {
+
+	public static void main(String[] args) {
+	
+		HotelReception hotel = new HotelReception();
+		
+		
+		System.out.println("---------------Welcome to our restuarant---------");
+		System.out.println("1. Indian Menu");
+		System.out.println("2. Italian Menu");
+		
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Enter Your Choice :");
+		int option = scanner.nextInt();
+		
+		switch(option) {
+		
+		case 1: {
+			System.out.println("Enjoy Your Indian Meal.");
+			hotel.getIndianMenu();
+			break;
+			
+		}
+		
+		case 2:{
+			System.out.println("Enjoy Your Italian Meal.");
+			hotel.getItalianMenu();
+			break;
+		}
+		
+		default :{
+			
+			System.out.println("Invalid Choice!!");
+
+		}
+		
+		}
+		
+
+	}
+
+}

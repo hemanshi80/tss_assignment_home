@@ -1,0 +1,70 @@
+package com.tss.structural.decorator.test;
+
+import java.util.Scanner;
+
+import com.tss.structural.decorator.model.CarInspection;
+import com.tss.structural.decorator.model.ICarService;
+import com.tss.structural.decorator.model.OilChange;
+import com.tss.structural.decorator.model.WheelAlignment;
+
+public class CarServiceTest {
+
+	public static void main(String[] args) {
+		
+		Scanner scanner = new Scanner(System.in);
+		ICarService service = new CarInspection();
+		
+		boolean wheelAdded = false;
+		boolean oilAdded = false;
+		
+		
+		while(true) {
+
+			System.out.println("--------Carzspa Garage---------");
+			System.out.println("1. For oil change (500)");
+			System.out.println("2. For Wheel Alignment (400)");
+			System.out.println("3. Total Cost");
+			System.out.println("4. Exit");
+			System.out.println("Choose your service :");
+			int choice = scanner.nextInt();
+			
+			switch (choice) {
+            case 1:
+                if (oilAdded) {
+                    System.out.println("Oil Change already added.");
+                } else {
+                    service = new OilChange(service);
+                    oilAdded = true;
+                    System.out.println("Oil Change added.");
+                }
+                break;
+
+            case 2:
+                if (wheelAdded) {
+                    System.out.println("Wheel Alignment already added.");
+                } else {
+                    service = new WheelAlignment(service);
+                    wheelAdded = true;
+                    System.out.println("Wheel Alignment added.");
+                }
+                break;
+
+            case 3:
+                double cost = service.getCost();
+                System.out.println("Total Service Cost: " + cost);
+                break;
+
+            case 4:
+                System.out.println("Thank you for using Car Service!");
+                scanner.close();
+                return;
+
+            default:
+                System.out.println(" Invalid choice. Try again.");
+        }
+
+
+
+	}
+
+}

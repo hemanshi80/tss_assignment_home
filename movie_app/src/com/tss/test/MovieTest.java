@@ -15,6 +15,7 @@ import com.tss.model.MovieListEmpty;
 import com.tss.model.MovieListFull;
 
 public class MovieTest {
+	
 	static Scanner scanner = new Scanner(System.in);
 	static List<Movie> movies = new ArrayList<>();
 	static final String FILE_NAME = "movies.ser";
@@ -122,8 +123,10 @@ public class MovieTest {
 		if (movies.size() == maxMovies) {
 			 throw new MovieListFull("List is full! Cannot add more than 5 movies.");
 		}
+		
+		
 		System.out.print("Enter Movie Name :");
-		String movieName = scanner.nextLine();
+		String movieName = scanner.next();
 		scanner.nextLine();
 		
 		System.out.println("Enter Movie Genre :");
@@ -155,6 +158,7 @@ public class MovieTest {
 	}
 	
 	private static void serializeMovies() {
+		System.out.println("Attempting to save movies...");
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
             oos.writeObject(movies);
             System.out.println("Movies saved successfully.");

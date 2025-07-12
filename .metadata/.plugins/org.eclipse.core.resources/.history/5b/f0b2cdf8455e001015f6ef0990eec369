@@ -1,0 +1,13 @@
+package com.tss.structural.decorator.model;
+
+public class CarServiceDecorator implements ICarService{
+
+	ICarService carobj = new CarServiceDecorator();
+	
+	@Override
+	public double getCost() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

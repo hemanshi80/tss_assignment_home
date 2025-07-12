@@ -1,7 +1,9 @@
 package com.tss.model;
 
-public class Movie {
+import java.io.Serializable;
 
+public class Movie implements Serializable {
+	private static final long serialVersionUID = 1;
 	private String id ;
 	private String genre;
 	private int year;

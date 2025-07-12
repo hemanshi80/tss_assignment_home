@@ -22,8 +22,8 @@ public class BookTest {
 			 System.out.println("4. Display all issued books");
 			 System.out.println("5. Return Book");
 			 System.out.println("6. Sort Books by Author (Ascending)");
-			 System.out.println("6. Sort Books by Title (Desencding)");
-			 System.out.println("7. Exit!!");
+			 System.out.println("7. Sort Books by Title (Desencding)");
+			 System.out.println("8. Exit!!");
 			 System.out.println("Enter your choice :");
 			 int choice = scanner.nextInt();
 			 

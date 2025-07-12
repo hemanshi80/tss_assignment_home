@@ -1,8 +1,0 @@
-package com.tss.model;
-
-public class MovieListFull extends Exception {
-
-	public MovieListFull(String message) {
-        super(message);
-    }
-}

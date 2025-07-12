@@ -1,0 +1,38 @@
+package com.tss.structural.adapter.model;
+
+public class Hat implements {
+
+	String shortName;
+	String longName;
+	double discount;
+	double price;
+	
+
+	public Hat(String shortName, String longName, double discount, double price) {
+		super();
+		this.shortName = shortName;
+		this.longName = longName;
+		this.discount = discount;
+		this.price = price;
+	}
+
+	public String getShortName() {
+		return shortName;
+	}
+
+	public String getLongName() {
+		return longName;
+	}
+
+	public double getDiscount() {
+		return discount;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	
+
+	
+}

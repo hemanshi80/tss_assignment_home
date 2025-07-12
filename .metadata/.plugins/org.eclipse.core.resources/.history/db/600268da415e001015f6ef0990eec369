@@ -1,0 +1,91 @@
+package com.tss.structural.adapter.test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+import com.tss.structural.adapter.model.Biscuit;
+import com.tss.structural.adapter.model.Chocolate;
+import com.tss.structural.adapter.model.Hat;
+import com.tss.structural.adapter.model.HatAdapter;
+import com.tss.structural.adapter.model.IItems;
+import com.tss.structural.adapter.model.ShoppingCart;
+
+public class ShoppingCartTest {
+
+	public static void main(String[] args) {
+		
+		Scanner scanner = new Scanner(System.in);
+        List<IItems> cartItems = new ArrayList<>();
+        ShoppingCart cart = new ShoppingCart(cartItems);
+        
+        while(true) {
+        	System.out.println("Amazon Cart");
+        	System.out.println("1. Add Items to Cart");
+        	System.out.println("2. Get Cart Items");
+            System.out.println("3. Get Cart Price");
+            System.out.println("4. Display Cart");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            
+            switch (choice) {
+            case 1:
+                System.out.println("1. Biscuit (10)\n2. Chocolate (20)\n3. Hat (50 + 14% discount)");
+                System.out.print("Enter item number to add: ");
+                int itemChoice = scanner.nextInt();  // FIXED HERE
+                scanner.nextLine(); // consume leftover newline
+                switch (itemChoice) {
+                    case 1:
+                        cart.addItemsToCart(Arrays.asList(new Biscuit("Biscuit", 10)));
+                        System.out.println("Biscuit added.");
+                        break;
+                    case 2:
+                        cart.addItemsToCart(Arrays.asList(new Chocolate("Chocolate", 20)));
+                        System.out.println("Chocolate added.");
+                        break;
+                    case 3:
+                        Hat hat = new Hat("Hat", "Fedora", 50, 0.14); 
+                        cart.addItemsToCart(Arrays.asList(new HatAdapter(hat)));
+                        System.out.println("Hat added.");
+                        break;
+                    default:
+                        System.out.println("Invalid item selection.");
+                }
+                break;
+
+
+            case 2:
+                List<IItems> items = cart.getCartItems();
+                if (items.isEmpty()) {
+                    System.out.println("Cart is empty.");
+                } else {
+                    System.out.println("Items currently in cart:");
+                    for (IItems item : items) {
+                        System.out.println("- " + item.getItemName());
+                    }
+                }
+                break;
+
+            case 3:
+                double total = cart.getCartPrice();
+                System.out.printf("Total Cart Price: ", total);
+                break;
+
+            case 4:
+                cart.displayCart();
+                break;
+
+            case 5:
+                System.out.println("Exiting. Thank you for shopping!");
+                scanner.close();
+                return;
+
+            default:
+                System.out.println("Invalid choice. Try again.");
+        }
+	}
+
+}
+}

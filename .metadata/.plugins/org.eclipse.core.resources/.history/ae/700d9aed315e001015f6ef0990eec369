@@ -1,0 +1,11 @@
+package com.tss.creational.builder;
+
+import com.tss.creational.builder.model.Car;
+
+public interface CarBuilder {
+
+	void buildEngine();
+	void buildWheels();
+	void buildAirConditioning();
+	Car getCar();
+}
