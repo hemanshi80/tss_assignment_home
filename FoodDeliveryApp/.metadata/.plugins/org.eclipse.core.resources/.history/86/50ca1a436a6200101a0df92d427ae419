@@ -1,0 +1,24 @@
+package com.tss.orders;
+
+public class InvoicePrinter {
+
+	 public static void printInvoice(Order order) {
+	        System.out.println("\n================== INVOICE ==================");
+	        System.out.println("Order ID: " + order.getOrderId());
+	        System.out.println("Order Time: " + order.getOrderTime());
+	        System.out.println("\nItems Ordered:");
+	        for (FoodItem item : order.getItems()) {
+	            System.out.printf(" - %s : ₹%.2f\n   %s\n", item.getName(), item.getPrice(), item.getDescription());
+	        }
+	        System.out.println("\n---------------------------------------------");
+	        System.out.printf("Total (before discount): ₹%.2f\n", order.getTotalAmount());
+
+	        if (order.getDiscount() != null) {
+	            System.out.printf("Total (after discount): ₹%.2f\n", order.getDiscountedAmount());
+	        }
+
+	        System.out.println("Payment Mode: " + order.getPaymentMode().getPaymentMode());
+	        System.out.println("Payment Status: " + (order.processPayment() ? "Success" : "Failed"));
+	        System.out.println("=============================================\n");
+	    }
+}

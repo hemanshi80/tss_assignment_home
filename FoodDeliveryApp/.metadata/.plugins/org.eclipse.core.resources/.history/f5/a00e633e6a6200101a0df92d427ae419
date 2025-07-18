@@ -1,0 +1,5 @@
+package com.tss.orders;
+
+public class InvoicePrinter {
+
+}

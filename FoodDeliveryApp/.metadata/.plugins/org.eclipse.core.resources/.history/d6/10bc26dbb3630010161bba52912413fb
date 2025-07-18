@@ -1,0 +1,42 @@
+package com.tss.admin;
+
+
+import com.tss.model.Discount;
+
+public class DiscountManager {
+	
+	private Discount discount;
+	
+	public DiscountManager() {
+       
+        discount = new Discount(10.0);
+    }
+	
+	 public void editDiscountPercentage(double newPercentage) {
+	        if (discount != null) {
+	            discount.setPercentage(newPercentage);
+	            System.out.println("Discount updated to: " + newPercentage + "%");
+	        } else {
+	            System.out.println("Discount not initialized.");
+	        }
+	    }
+	 
+	  public void viewDiscount() {
+	        if (discount == null) {
+	            System.out.println("No discount configured.");
+	        } else {
+	            System.out.printf("Current Discount: %.2f%% on orders above ₹%.2f%n",
+	                              discount.getPercentage(), discount.getMinAmount());
+	        }
+	    }
+	  
+	  public Discount getDiscount() {
+	        return discount;
+	    }
+
+	    public void removeDiscount() {
+	        discount = null;
+	        System.out.println("Discount removed.");
+	    }
+	
+}

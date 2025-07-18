@@ -1,0 +1,20 @@
+package com.tss.customer;
+
+import java.util.List;
+
+import com.tss.model.FoodItem;
+
+public class ViewMenu {
+
+
+    public static void displayMenu(List<FoodItem> menuItems) {
+        if (menuItems == null || menuItems.isEmpty()) {
+            System.out.println("Menu is currently unavailable.");
+            return;
+        }
+        System.out.println("Available Food Items:");
+        for (FoodItem item : menuItems) {
+            System.out.println(item);
+        }
+    }
+}

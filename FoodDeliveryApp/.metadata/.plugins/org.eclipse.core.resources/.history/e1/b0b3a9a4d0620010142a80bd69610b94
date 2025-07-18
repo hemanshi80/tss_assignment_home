@@ -1,0 +1,23 @@
+package com.tss.menu;
+
+import java.util.Arrays;
+import java.util.List;
+
+import com.tss.model.FoodItem;
+
+public class IndianMenu  implements IMenu {
+
+    @Override
+    public List<FoodItem> getItems() {
+        return Arrays.asList(
+            new FoodItem("Paneer Butter Masala", 200, "Cottage cheese cubes in buttery tomato gravy."),
+            new FoodItem("Butter Naan", 40, "Soft Indian bread brushed with butter."),
+            new FoodItem("Biryani", 180, "Aromatic rice cooked with Indian spices and vegetables.")
+        );
+    }
+
+    @Override
+    public String getCuisineName() {
+        return "Indian";
+    }
+}

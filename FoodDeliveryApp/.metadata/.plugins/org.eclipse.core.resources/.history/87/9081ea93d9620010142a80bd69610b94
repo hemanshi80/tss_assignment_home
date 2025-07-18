@@ -1,0 +1,30 @@
+package com.tss.orders;
+
+import com.tss.model.FoodItem;
+
+public class InvoicePrinter {
+
+	public static void printInvoice(Order order) {
+        System.out.println("\n========= INVOICE =========");
+
+        double total = 0;
+        for (FoodItem item : order.getItems()) {
+            System.out.println(item.getName() + " - ₹" + item.getPrice());
+            total += item.getPrice();
+        }
+
+        System.out.println("----------------------------");
+        System.out.println("Subtotal: ₹" + total);
+
+        double discountedTotal = total;
+        if (order.getDiscount() != null) {
+            discountedTotal = order.getDiscount().applyDiscount(total);
+        }
+
+        System.out.println("Total after Discount: ₹" + discountedTotal);
+        System.out.println("Payment Method: " + order.getPayment().getPaymentMode());
+        System.out.println("Delivery By: " + order.getDeliveryAgent().getName());
+
+        System.out.println("============================\n");
+    }
+}

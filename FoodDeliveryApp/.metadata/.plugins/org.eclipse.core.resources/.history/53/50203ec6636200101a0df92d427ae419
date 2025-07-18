@@ -1,0 +1,5 @@
+ackage com.tss.delivery;
+
+public class IDeliveryAgent {
+
+}

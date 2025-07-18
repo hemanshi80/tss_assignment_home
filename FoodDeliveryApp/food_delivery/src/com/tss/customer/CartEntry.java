@@ -1,0 +1,35 @@
+package com.tss.customer;
+
+import java.io.Serializable;
+
+import com.tss.model.FoodItem;
+
+public class CartEntry implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private FoodItem item;
+    private int quantity;
+
+    public CartEntry(FoodItem item, int quantity) {
+        this.item = item;
+        this.quantity = quantity;
+    }
+
+    public FoodItem getItem() {
+        return item;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void increaseQuantity(int qty) {
+        this.quantity += qty;
+    }
+
+    public double getTotalPrice() {
+        return item.getPrice() * quantity;
+    }
+
+}

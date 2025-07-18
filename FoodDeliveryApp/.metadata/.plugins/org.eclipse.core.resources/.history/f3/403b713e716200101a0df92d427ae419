@@ -1,0 +1,5 @@
+package com.tss.delivery;
+
+public interface IDeliveryAgent {
+
+}

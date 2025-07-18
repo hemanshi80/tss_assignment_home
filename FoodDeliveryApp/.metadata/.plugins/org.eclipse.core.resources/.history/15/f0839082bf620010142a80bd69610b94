@@ -1,0 +1,41 @@
+package com.tss.admin;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.tss.model.FoodItem;
+
+public class MenuManager {
+
+	private final List<FoodItem> menuItems;
+
+    public MenuManager() {
+        this.menuItems = new ArrayList<>();
+    }
+
+    public void addFoodItem(FoodItem item) {
+        menuItems.add(item);
+        System.out.println("Added item: " + item.getName());
+    }
+
+    public void removeFoodItem(String itemName) {
+        menuItems.removeIf(item -> item.getName().equalsIgnoreCase(itemName));
+        System.out.println("Removed item: " + itemName);
+    }
+
+    public List<FoodItem> getMenuItems() {
+        return new ArrayList<>(menuItems); 
+    }
+
+    public void displayMenu() {
+        if (menuItems.isEmpty()) {
+            System.out.println("Menu is currently empty.");
+        } else {
+            System.out.println("Menu Items:");
+            for (FoodItem item : menuItems) {
+                System.out.println(item);
+            }
+        }
+    }
+	
+}

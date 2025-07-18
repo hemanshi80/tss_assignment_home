@@ -1,0 +1,42 @@
+package com.tss.customer;
+
+import java.util.List;
+import java.util.Random;
+
+import com.tss.delivery.IDeliveryAgent;
+import com.tss.delivery.Swiggy;
+import com.tss.delivery.Zomato;
+import com.tss.model.FoodItem;
+import com.tss.model.IDiscount;
+import com.tss.orders.Order;
+import com.tss.payment.IPayment;
+
+public class CustomerPayment {
+	
+	  public static Order checkout(List<FoodItem> items, IDiscount discount, IPayment payment) {
+	        double total = 0;
+	        for (FoodItem item : items) {
+	            total += item.getPrice();
+	        }
+
+	        if (discount != null) {
+	            total = discount.applyDiscount(total);
+	        }
+
+	        boolean paid = payment.pay(total);
+	        if (!paid) {
+	            System.out.println("Payment failed.");
+	            return null;
+	        }
+
+	        IDeliveryAgent agent = assignRandomAgent();
+
+	        return new Order(items, total, payment, discount, agent);
+	    }
+
+	    private static IDeliveryAgent assignRandomAgent() {
+	        Random random = new Random();
+	        return random.nextBoolean() ? new Swiggy() : new Zomato();
+	    }
+
+}

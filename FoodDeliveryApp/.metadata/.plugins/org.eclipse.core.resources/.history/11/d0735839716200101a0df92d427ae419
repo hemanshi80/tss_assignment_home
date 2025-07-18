@@ -1,0 +1,262 @@
+package com.tss.test;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import com.tss.admin.MenuManager;
+import com.tss.checker.PaymentSecurityCheck;
+import com.tss.checker.UserInputChecker;
+import com.tss.customer.Customer;
+import com.tss.customer.CustomerCart;
+import com.tss.customer.CustomerLogin;
+import com.tss.customer.CustomerPayment;
+import com.tss.customer.ViewMenu;
+import com.tss.exception.CartIsEmptyException;
+import com.tss.exception.MenuUnavailableException;
+import com.tss.menu.ChineseMenu;
+import com.tss.menu.IndianMenu;
+import com.tss.menu.ItalianMenu;
+import com.tss.model.Discount;
+import com.tss.model.FoodItem;
+import com.tss.model.IDiscount;
+import com.tss.orders.InvoicePrinter;
+import com.tss.orders.Order;
+import com.tss.payment.Card;
+import com.tss.payment.Cash;
+import com.tss.payment.IPayment;
+import com.tss.payment.UPI;
+import com.tss.utils.DataWriter;
+
+public class FoodTest {
+	
+	private static Scanner scanner = new Scanner(System.in);
+    private static List<FoodItem> menu = new ArrayList<>();
+    private static CustomerCart cart = new CustomerCart();
+    private static Customer loggedInCustomer = null;
+
+	public static void main(String[] args) {
+		loadMenu();
+
+        System.out.println("=== Welcome to Food Delivery App ===");
+        boolean running = true;
+
+        while (running) {
+            System.out.println("\n1. Register\n2. Login\n3. View Menu\n4. Add to Cart\n5. View Cart\n6. Checkout\n7. Exit");
+            System.out.print("Choose an option: ");
+            int choice = getIntInput();
+
+            try {
+                switch (choice) {
+                    case 1:
+                        registerCustomer();
+                        break;
+                    case 2:
+                        loginCustomer();
+                        break;
+                    case 3:
+                        viewMenu();
+                        break;
+                    case 4:
+                        addToCart();
+                        break;
+                    case 5:
+                        viewCart();
+                        break;
+                    case 6:
+                        checkout();
+                        break;
+                    case 7:
+                        running = false;
+                        System.out.println("Thank you for using the Food App!");
+                        break;
+                    default:
+                        System.out.println("Invalid choice.");
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+
+        scanner.close();
+    }
+
+    private static void registerCustomer() {
+        System.out.print("Enter name: ");
+        String name = scanner.nextLine();
+        if (!UserInputChecker.isValidName(name)) {
+            System.out.println("Invalid name.");
+            return;
+        }
+
+        System.out.print("Enter email: ");
+        String email = scanner.nextLine();
+        if (!UserInputChecker.isValidEmail(email)) {
+            System.out.println("Invalid email.");
+            return;
+        }
+
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+        if (!UserInputChecker.isValidPassword(password)) {
+            System.out.println("Password too short.");
+            return;
+        }
+
+        System.out.print("Enter address: ");
+        String address = scanner.nextLine();
+
+        Customer customer = new Customer(name, email, password, address);
+        CustomerLogin.register(customer);
+    }
+
+    private static void loginCustomer() {
+        System.out.print("Enter email: ");
+        String email = scanner.nextLine();
+
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        loggedInCustomer = CustomerLogin.login(email, password);
+    }
+
+    private static void loadMenu() {
+        MenuManager menuManager = new MenuManager();
+
+        IndianMenu indian = new IndianMenu();
+        ChineseMenu chinese = new ChineseMenu();
+        ItalianMenu italian = new ItalianMenu();
+
+        for (FoodItem item : indian.getItems()) {
+            menuManager.addFoodItem(item);
+        }
+
+        for (FoodItem item : chinese.getItems()) {
+            menuManager.addFoodItem(item);
+        }
+
+        for (FoodItem item : italian.getItems()) {
+            menuManager.addFoodItem(item);
+        }
+
+        menu = menuManager.getMenuItems();
+        DataWriter.writeToFile("menu.dat", menu);
+    }
+    
+
+    private static void viewMenu() throws MenuUnavailableException {
+        if (menu.isEmpty()) throw new MenuUnavailableException();
+
+        ViewMenu.displayMenu(menu);
+    }
+
+    private static void addToCart() throws MenuUnavailableException {
+        if (menu.isEmpty()) throw new MenuUnavailableException();
+
+        ViewMenu.displayMenu(menu);
+        System.out.print("Enter item number to add to cart: ");
+        int index = getIntInput();
+
+        if (index > 0 && index <= menu.size()) {
+            cart.addItem(menu.get(index - 1));
+        } else {
+            System.out.println("Invalid item number.");
+        }
+    }
+
+    private static void viewCart() throws CartIsEmptyException {
+        List<FoodItem> items = cart.getItems();
+        if (items.isEmpty()) throw new CartIsEmptyException();
+
+        System.out.println("Your Cart:");
+        int i = 1;
+        for (FoodItem item : items) {
+            System.out.println(i++ + ". " + item.getName() + " - ₹" + item.getPrice());
+        }
+        System.out.println("Total: ₹" + cart.getTotal());
+    }
+
+    private static void checkout() throws CartIsEmptyException {
+        if (cart.isEmpty()) throw new CartIsEmptyException();
+
+        System.out.println("Choose payment method:");
+        System.out.println("1. UPI\n2. Card\n3. Cash");
+        int option = getIntInput();
+
+        IPayment payment = null;
+
+        switch (option) {
+            case 1:
+                System.out.print("Enter UPI ID: ");
+                String upi = scanner.nextLine();
+                if (!PaymentSecurityCheck.isValidUPI(upi)) {
+                    System.out.println("Invalid UPI ID.");
+                    return;
+                }
+                payment = new UPI(upi);
+                break;
+
+            case 2:
+            	System.out.print("Enter Card Number (16 digits): ");
+            	String cardNumber = scanner.nextLine();
+
+            	System.out.print("Enter Cardholder Name: ");
+            	String cardHolder = scanner.nextLine();
+
+            	System.out.print("Enter Expiry Date (MM/YY): ");
+            	String expiry = scanner.nextLine();
+
+            	if (!PaymentSecurityCheck.isValidCard(cardNumber, cardHolder, expiry)) {
+            	    System.out.println("Invalid card details.");
+            	    return;
+            	}
+
+            	payment = new Card(cardNumber, cardHolder, expiry);
+                break;
+
+            case 3:
+                System.out.print("Enter cash amount: ");
+                double cash = getDoubleInput();
+                if (!PaymentSecurityCheck.isValidCashAmount(cash)) {
+                    System.out.println("Invalid cash amount.");
+                    return;
+                }
+                payment = new Cash();
+                break;
+
+            default:
+                System.out.println("Invalid payment option.");
+                return;
+        }
+
+        System.out.println("Apply Discount? (1. Yes / 2. No): ");
+        int dOption = getIntInput();
+        IDiscount discount = null;
+
+        if (dOption == 1) {
+            discount = new Discount(10); // flat 10% for demo
+        }
+
+        Order order = CustomerPayment.checkout(cart.getItems(), discount, payment);
+        InvoicePrinter.printInvoice(order);
+        cart.clearCart();
+    }
+
+    private static int getIntInput() {
+        try {
+            return Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException ex) {
+            return -1;
+        }
+    }
+
+    private static double getDoubleInput() {
+        try {
+            return Double.parseDouble(scanner.nextLine());
+        } catch (NumberFormatException ex) {
+            return -1;
+        }
+
+	}
+
+}

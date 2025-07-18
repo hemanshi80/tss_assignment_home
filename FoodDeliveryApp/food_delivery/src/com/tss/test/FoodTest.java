@@ -1,0 +1,272 @@
+package com.tss.test;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import com.tss.admin.*;
+import com.tss.checker.*;
+import com.tss.customer.*;
+import com.tss.delivery.*;
+import com.tss.menu.*;
+import com.tss.model.*;
+import com.tss.orders.*;
+import com.tss.payment.*;
+import com.tss.utils.*;
+
+public class FoodTest {
+	
+	private static final Scanner scanner = new Scanner(System.in);
+    private static List<FoodItem> menu = new ArrayList<>();
+    private static List<Customer> customers = new ArrayList<>();
+    private static DeliveryAgentManager agentManager = new DeliveryAgentManager();
+    private static final DiscountManager discountManager = new DiscountManager();
+
+    public static void main(String[] args) {
+        loadMenu();
+        loadCustomers();
+
+        System.out.println("Welcome to Hemanshi's Food Delivery ");
+
+        while (true) {
+            System.out.println("\nAre you:");
+            System.out.println("1. Admin");
+            System.out.println("2. Customer");
+            System.out.println("3. Exit");
+            System.out.print("Enter choice: ");
+            int role = getIntInput();
+
+            switch (role) {
+                case 1:
+                    adminMenu();
+                    break;
+                case 2:
+                    handleCustomer();
+                    break;
+                case 3:
+                    System.out.println("Thanks for using TSS Food Delivery. Goodbye!");
+                    return;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static void adminMenu() {
+        System.out.print("Enter admin username: ");
+        String username = scanner.nextLine();
+        System.out.print("Enter admin password: ");
+        String password = scanner.nextLine();
+
+        if (!username.equals("admin") || !password.equals("admin")) {
+            System.out.println("Invalid admin credentials.");
+            return;
+        }
+
+        System.out.println("Admin login successful.");
+
+        Admin adminPanel = new Admin(menu);
+        adminPanel.launchAdminPanel();
+
+        menu = new MenuManager().getMenuItems();
+    }
+
+
+    private static void handleCustomer() {
+        Customer customer = CustomerLogin.authenticate(customers);
+        if (customer == null) {
+            return;
+        }
+
+        DataWriter.writeToFile("customers.dat", customers);
+
+        CustomerCart cart = new CustomerCart();
+        while (true) {
+            System.out.println("\n--- Customer Menu ---");
+            System.out.println("1. View Menu");
+            System.out.println("2. Add Item to Cart");
+            System.out.println("3. Remove Item from Cart");
+            System.out.println("4. View Cart");
+            System.out.println("5. Checkout");
+            System.out.println("6. Logout");
+            System.out.print("Enter your choice: ");
+            int option = getIntInput();
+
+            switch (option) {
+                case 1:
+                    ViewMenu.displayMenu(menu);
+                    break;
+                case 2:
+                	 ViewMenu.displayMenu(menu);
+                	    System.out.print("Enter item number to add: ");
+                	    int itemIndex = getIntInput();
+
+                	    if (itemIndex < 1 || itemIndex > menu.size()) {
+                	        System.out.println("Invalid item number.");
+                	        break;
+                	    }
+
+                	    FoodItem selectedItem = menu.get(itemIndex - 1);
+                	    System.out.print("Enter quantity: ");
+                	    int quantity = getIntInput();
+                	    if (quantity <= 0) {
+                	        System.out.println("Quantity must be at least 1.");
+                	        break;
+                	    }
+
+                	    cart.addItem(selectedItem, quantity);
+                	    break;
+                	    
+                case 3:
+                    if (cart.getItems().isEmpty()) {
+                        System.out.println("Cart is empty. Nothing to remove.");
+                        break;
+                    }
+
+                    cart.viewCart();
+                    System.out.print("Enter item number to remove: ");
+                    int removeIndex = getIntInput();
+                    if (removeIndex < 1 || removeIndex > cart.getItems().size()) {
+                        System.out.println("Invalid item number.");
+                    } else {
+                        cart.removeItem(removeIndex - 1);
+                        System.out.println("Item removed from cart.");
+                    }
+                    break;
+                    
+                case 4:
+                    cart.viewCart();
+                    break;
+                    
+                case 5:
+                    if (cart.getItems().isEmpty()) {
+                        System.out.println("Cart is empty. Add items first.");
+                        break;
+                    }
+                    handleCheckout(cart, customer);
+                    break;
+                    
+                case 6:
+                    System.out.println("Logged out successfully.");
+                    return;
+                    
+                default:
+                    System.out.println("Invalid option.");
+            }
+        }
+    }
+
+
+    private static void handleCheckout(CustomerCart cart, Customer customer) {
+        cart.viewCart();
+        
+        double total = 0;
+        for (FoodItem item : cart.getItems()) {
+            total += item.getPrice();
+        }
+
+        IDiscount discount = null;
+        if (total > 500 && discountManager.getDiscount() != null) {
+            discount = discountManager.getDiscount();
+            total = discount.applyDiscount(total);
+        }
+
+        IPayment payment = null;
+        System.out.println("Select Payment Method:");
+        System.out.println("1. UPI");
+        System.out.println("2. Card");
+        System.out.println("3. Cash");
+        int pOption = getIntInput();
+
+        switch (pOption) {
+            case 1:
+                System.out.print("Enter UPI ID: ");
+                String upiId = scanner.nextLine();
+                if (!PaymentSecurityCheck.isValidUPI(upiId)) {
+                    System.out.println("Invalid UPI ID.");
+                    return;
+                }
+                payment = new UPI(upiId);
+                break;
+            case 2:
+                System.out.print("Enter Card Number: ");
+                String card = scanner.nextLine();
+                System.out.print("Enter Card Holder Name: ");
+                String holder = scanner.nextLine();
+                System.out.print("Enter Expiry Date: ");
+                String expiry = scanner.nextLine();
+                if (!PaymentSecurityCheck.isValidCardNumber(card) ||
+                	    !PaymentSecurityCheck.isValidCardHolderName(holder) ||
+                	    !PaymentSecurityCheck.isValidExpiryDate(expiry)) {
+                    System.out.println("Invalid Card Details.");
+                    return;
+                }
+                payment = new Card(card, holder, expiry);
+                break;
+            case 3:
+                System.out.print("Enter cash amount: ");
+                double cash = getDoubleInput();
+                if (!PaymentSecurityCheck.isValidCashAmount(cash)) {
+                    System.out.println("Invalid cash amount.");
+                    return;
+                }
+                payment = new Cash(cash);
+                break;
+            default:
+                System.out.println("Invalid payment option.");
+                return;
+        }
+
+      
+        if (discount != null) {
+            total = discount.applyDiscount(total);
+        }
+
+        IDeliveryAgent agent = assignRandomAgent();
+        Order order = new Order(cart.getCartEntries(), total, payment, discount, agent);
+        agent.deliver(customer.getName(), customer.getAddress());
+        InvoicePrinter.printInvoice(order);
+        cart.clearCart();
+        DataWriter.writeToFile("customers.dat", customers);
+    }
+
+    private static IDeliveryAgent assignRandomAgent() {
+        IDeliveryAgent agent = agentManager.getRandomAgent();
+        if (agent == null) {
+            System.out.println("No delivery agents available. Please contact admin.");
+        }
+        return agent;
+    }
+
+    private static void loadMenu() {
+        menu.clear();
+        IMenu[] cuisines = { new IndianMenu(), new ChineseMenu(), new ItalianMenu() };
+        for (IMenu menuType : cuisines) {
+            menu.addAll(menuType.getItems());
+        }
+        DataWriter.writeToFile("menu.dat", menu);
+    }
+
+    private static void loadCustomers() {
+        customers = DataReader.readFromFile("customers.dat", Customer.class);
+    }
+
+    private static int getIntInput() {
+        while (true) {
+            try {
+                return Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                System.out.print("Invalid input. Enter again: ");
+            }
+        }
+    }
+
+    private static double getDoubleInput() {
+        while (true) {
+            try {
+                return Double.parseDouble(scanner.nextLine());
+            } catch (Exception e) {
+                System.out.print("Invalid number. Enter again: ");
+            }
+        }
+    }
+}

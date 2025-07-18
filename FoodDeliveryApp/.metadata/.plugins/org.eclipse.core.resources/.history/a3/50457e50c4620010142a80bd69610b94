@@ -1,0 +1,49 @@
+package com.tss.orders;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+import com.tss.delivery.IDeliveryAgent;
+import com.tss.model.FoodItem;
+import com.tss.model.IDiscount;
+import com.tss.payment.IPayment;
+
+public class Order  implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+    private List<FoodItem> items;
+    private double totalAmount;
+    private IPayment payment;
+    private IDiscount discount;
+    private IDeliveryAgent deliveryAgent;
+
+    public Order(List<FoodItem> items, double totalAmount, IPayment payment, IDiscount discount, IDeliveryAgent deliveryAgent) {
+        this.items = items;
+        this.totalAmount = totalAmount;
+        this.payment = payment;
+        this.discount = discount;
+        this.deliveryAgent = deliveryAgent;
+    }
+
+    public List<FoodItem> getItems() {
+        return items;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public IPayment getPayment() {
+        return payment;
+    }
+
+    public IDiscount getDiscount() {
+        return discount;
+    }
+
+    public IDeliveryAgent getDeliveryAgent() {
+        return deliveryAgent;
+    }
+}

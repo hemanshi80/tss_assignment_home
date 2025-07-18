@@ -1,0 +1,23 @@
+package com.tss.delivery;
+
+public class Zomato implements IDeliveryAgent {
+
+    private static final long serialVersionUID = 1L;
+
+    private final String name = "Zomato";
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void deliverOrder(String orderId) {
+        System.out.println("Zomato is delivering Order ID: " + orderId);
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+}

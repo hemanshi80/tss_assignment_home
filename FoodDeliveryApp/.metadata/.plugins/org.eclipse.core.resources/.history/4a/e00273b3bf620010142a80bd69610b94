@@ -1,0 +1,40 @@
+package com.tss.admin;
+
+import java.io.Serializable;
+
+public class DiscountManager implements Serializable {
+	
+    private double flatDiscount;
+    private double threshold;
+
+    public DiscountManager(double flatDiscount, double threshold) {
+        this.flatDiscount = flatDiscount;
+        this.threshold = threshold;
+    }
+
+    public double applyDiscount(double totalAmount) {
+        if (totalAmount > threshold) {
+            System.out.println("Flat discount of ₹" + flatDiscount + " applied.");
+            return totalAmount - flatDiscount;
+        }
+        return totalAmount;
+    }
+
+    public double getFlatDiscount() {
+        return flatDiscount;
+    }
+
+    public void setFlatDiscount(double flatDiscount) {
+        this.flatDiscount = flatDiscount;
+    }
+
+    public double getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(double threshold) {
+        this.threshold = threshold;
+    }
+	
+
+}

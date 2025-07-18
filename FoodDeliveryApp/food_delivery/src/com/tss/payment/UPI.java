@@ -1,0 +1,27 @@
+package com.tss.payment;
+
+public class UPI implements IPayment {
+
+	  private static final long serialVersionUID = 1L;
+
+	    private String upiId;
+
+	    public UPI(String upiId) {
+	        this.upiId = upiId;
+	    }
+
+	    @Override
+	    public boolean pay(double amount) {
+	        System.out.println("Paid " + amount + " via UPI: " + upiId);
+	        return true;
+	    }
+
+	    @Override
+	    public String getPaymentMode() {
+	        return "UPI";
+	    }
+
+	    public String getUpiId() {
+	        return upiId;
+	    }
+}

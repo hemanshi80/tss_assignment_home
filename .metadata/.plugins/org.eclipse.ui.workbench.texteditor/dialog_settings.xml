@@ -7,7 +7,10 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
+		<item key="replaceBarOpen" value="false"/>
 		<list key="findhistory">
+			<item value="GameFacade"/>
+			<item value="game en"/>
 			<item value="id"/>
 		</list>
 		<list key="replacehistory">

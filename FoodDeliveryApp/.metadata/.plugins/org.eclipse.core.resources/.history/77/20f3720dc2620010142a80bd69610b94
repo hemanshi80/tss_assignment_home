@@ -1,0 +1,65 @@
+package com.tss.admin;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class DeliveryAgentManager {
+	
+	  private final List<IDeliveryAgent> agents;
+
+	    public DeliveryAgentManager() {
+	        this.agents = new ArrayList<>();
+	    }
+
+	    public void addAgent(String name) {
+	        IDeliveryAgent agent;
+	        if (name.equalsIgnoreCase("Swiggy")) {
+	            agent = new Swiggy();
+	        } else if (name.equalsIgnoreCase("Zomato")) {
+	            agent = new Zomato();
+	        } else {
+	            System.out.println("Unknown agent name. Only Swiggy or Zomato supported.");
+	            return;
+	        }
+	        agents.add(agent);
+	        System.out.println("Agent added: " + name);
+	    }
+
+	    public void removeAgent(String name) {
+	        boolean removed = false;
+	        for (int i = 0; i < agents.size(); i++) {
+	            if (agents.get(i).getName().equalsIgnoreCase(name)) {
+	                agents.remove(i);
+	                removed = true;
+	                System.out.println("Removed agent: " + name);
+	                break;
+	            }
+	        }
+	        if (!removed) {
+	            System.out.println("Agent not found: " + name);
+	        }
+	    }
+
+	    public List<IDeliveryAgent> getAgents() {
+	        return new ArrayList<>(agents);
+	    }
+
+	    public void viewAgents() {
+	        if (agents.isEmpty()) {
+	            System.out.println("No delivery agents added.");
+	        } else {
+	            System.out.println("Delivery Agents:");
+	            for (IDeliveryAgent agent : agents) {
+	                System.out.println("- " + agent.getName());
+	            }
+	        }
+	    }
+
+	    // Method to get a random agent (can be used during checkout)
+	    public IDeliveryAgent getRandomAgent() {
+	        if (agents.isEmpty()) return null;
+	        int index = (int) (Math.random() * agents.size());
+	        return agents.get(index);
+	    }
+
+}

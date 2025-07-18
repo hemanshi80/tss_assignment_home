@@ -1,0 +1,161 @@
+package com.tss.admin;
+import java.util.Scanner;
+
+public class Admin  {
+	  private final MenuManager menuManager;
+	    private final DiscountManager discountManager;
+	    private final DeliveryAgentManager agentManager;
+	    private final Scanner scanner;
+
+	    public Admin() {
+	        menuManager = new MenuManager();
+	        discountManager = new DiscountManager();
+	        agentManager = new DeliveryAgentManager();
+	        scanner = new Scanner(System.in);
+	    }
+
+	    public void launchAdminPanel() {
+	        System.out.println("Welcome Admin!");
+
+	        while (true) {
+	            System.out.println("\n--- Admin Menu ---");
+	            System.out.println("1. Manage Menu");
+	            System.out.println("2. Manage Discounts");
+	            System.out.println("3. Manage Delivery Agents");
+	            System.out.println("4. Exit Admin Panel");
+	            System.out.print("Enter option: ");
+	            int choice = getIntInput();
+
+	            switch (choice) {
+	                case 1:
+	                    manageMenu();
+	                    break;
+	                case 2:
+	                    manageDiscounts();
+	                    break;
+	                case 3:
+	                    manageAgents();
+	                    break;
+	                case 4:
+	                    System.out.println("Exiting Admin Panel...");
+	                    return;
+	                default:
+	                    System.out.println("Invalid choice.");
+	            }
+	        }
+	    }
+
+	    private void manageMenu() {
+	        while (true) {
+	            System.out.println("\n--- Menu Management ---");
+	            System.out.println("1. Add Food Item");
+	            System.out.println("2. Remove Food Item");
+	            System.out.println("3. View Menu");
+	            System.out.println("4. Back");
+	            System.out.print("Enter choice: ");
+	            int opt = getIntInput();
+	            switch (opt) {
+	                case 1:
+	                    System.out.print("Enter item name: ");
+	                    String name = scanner.nextLine();
+	                    System.out.print("Enter price: ");
+	                    double price = getDoubleInput();
+	                    menuManager.addFoodItem(new com.tss.model.FoodItem(name, price));
+	                    break;
+	                case 2:
+	                    System.out.print("Enter item name to remove: ");
+	                    String removeName = scanner.nextLine();
+	                    menuManager.removeFoodItem(removeName);
+	                    break;
+	                case 3:
+	                    menuManager.displayMenu();
+	                    break;
+	                case 4:
+	                    return;
+	                default:
+	                    System.out.println("Invalid option.");
+	            }
+	        }
+	    }
+
+	    private void manageDiscounts() {
+	        while (true) {
+	            System.out.println("\n--- Discount Management ---");
+	            System.out.println("1. Add Discount");
+	            System.out.println("2. Remove Discount");
+	            System.out.println("3. View Discounts");
+	            System.out.println("4. Back");
+	            System.out.print("Enter choice: ");
+	            int opt = getIntInput();
+	            switch (opt) {
+	                case 1:
+	                    System.out.print("Enter discount amount: ");
+	                    double amt = getDoubleInput();
+	                    System.out.print("Enter minimum order amount: ");
+	                    double minAmt = getDoubleInput();
+	                    discountManager.addDiscount(amt, minAmt);
+	                    break;
+	                case 2:
+	                    discountManager.viewDiscounts();
+	                    System.out.print("Enter index to remove: ");
+	                    int index = getIntInput() - 1;
+	                    discountManager.removeDiscount(index);
+	                    break;
+	                case 3:
+	                    discountManager.viewDiscounts();
+	                    break;
+	                case 4:
+	                    return;
+	                default:
+	                    System.out.println("Invalid option.");
+	            }
+	        }
+	    }
+
+	    private void manageAgents() {
+	        while (true) {
+	            System.out.println("\n--- Delivery Agent Management ---");
+	            System.out.println("1. Add Agent");
+	            System.out.println("2. Remove Agent");
+	            System.out.println("3. View Agents");
+	            System.out.println("4. Back");
+	            System.out.print("Enter choice: ");
+	            int opt = getIntInput();
+	            switch (opt) {
+	                case 1:
+	                    System.out.print("Enter agent name: ");
+	                    String name = scanner.nextLine();
+	                    agentManager.addAgent(name);
+	                    break;
+	                case 2:
+	                    System.out.print("Enter agent name to remove: ");
+	                    String rmName = scanner.nextLine();
+	                    agentManager.removeAgent(rmName);
+	                    break;
+	                case 3:
+	                    agentManager.viewAgents();
+	                    break;
+	                case 4:
+	                    return;
+	                default:
+	                    System.out.println("Invalid option.");
+	            }
+	        }
+	    }
+
+	    private int getIntInput() {
+	        while (!scanner.hasNextInt()) {
+	            System.out.println("Please enter a valid number.");
+	            scanner.next();
+	        }
+	        return scanner.nextInt();
+	    }
+
+	    private double getDoubleInput() {
+	        while (!scanner.hasNextDouble()) {
+	            System.out.println("Please enter a valid amount.");
+	            scanner.next();
+	        }
+	        return scanner.nextDouble();
+	    }
+}

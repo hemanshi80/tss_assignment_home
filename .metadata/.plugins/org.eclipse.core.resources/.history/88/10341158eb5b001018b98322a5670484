@@ -1,7 +1,0 @@
-package com.tss.model;
-
-public class IPayment {
-
-	void pay(int amount) {
-	}
-}

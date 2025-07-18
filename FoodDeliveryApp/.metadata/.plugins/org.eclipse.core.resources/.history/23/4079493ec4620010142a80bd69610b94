@@ -1,0 +1,70 @@
+package com.tss.orders;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+import com.tss.model.FoodItem;
+import com.tss.model.IDiscount;
+import com.tss.payment.IPayment;
+
+public class Order  implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private String orderId;
+    private List<FoodItem> items;
+    private double totalAmount;
+    private double discountedAmount;
+    private IDiscount discount;
+    private IPayment paymentMode;
+    private LocalDateTime orderTime;
+
+    public Order(List<FoodItem> items, IDiscount discount, IPayment paymentMode) {
+        this.orderId = UUID.randomUUID().toString();
+        this.items = items;
+        this.totalAmount = calculateTotal(items);
+        this.discount = discount;
+        this.discountedAmount = discount != null ? discount.applyDiscount(totalAmount) : totalAmount;
+        this.paymentMode = paymentMode;
+        this.orderTime = LocalDateTime.now();
+    }
+
+    private double calculateTotal(List<FoodItem> items) {
+        return items.stream().mapToDouble(FoodItem::getPrice).sum();
+    }
+
+    public boolean processPayment() {
+        return paymentMode.pay(discountedAmount);
+    }
+
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public List<FoodItem> getItems() {
+        return items;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public double getDiscountedAmount() {
+        return discountedAmount;
+    }
+
+    public IDiscount getDiscount() {
+        return discount;
+    }
+
+    public IPayment getPaymentMode() {
+        return paymentMode;
+    }
+
+    public LocalDateTime getOrderTime() {
+        return orderTime;
+    }
+}

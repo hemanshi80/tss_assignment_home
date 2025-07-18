@@ -1,0 +1,42 @@
+package com.tss.admin;
+
+import java.io.Serializable;
+
+public class DiscountManager {
+	
+	private final List<Discount> discountList;
+
+    public DiscountManager() {
+        this.discountList = new ArrayList<>();
+    }
+
+    public void addDiscount(double amount, double minAmount) {
+        Discount discount = new Discount(amount, minAmount);
+        discountList.add(discount);
+        System.out.println("Discount added: ₹" + amount + " off on min ₹" + minAmount);
+    }
+
+    public void removeDiscount(int index) {
+        if (index >= 0 && index < discountList.size()) {
+            Discount removed = discountList.remove(index);
+            System.out.println("Removed discount: ₹" + removed.getFlatAmount());
+        } else {
+            System.out.println("Invalid index.");
+        }
+    }
+
+    public void viewDiscounts() {
+        if (discountList.isEmpty()) {
+            System.out.println("No discounts available.");
+        } else {
+            for (int i = 0; i < discountList.size(); i++) {
+                Discount d = discountList.get(i);
+                System.out.println((i + 1) + ". ₹" + d.getFlatAmount() + " off on min ₹" + d.getMinAmount());
+            }
+        }
+    }
+
+    public List<Discount> getAllDiscounts() {
+        return new ArrayList<>(discountList);
+    }
+}

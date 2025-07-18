@@ -1,0 +1,39 @@
+package com.tss.model;
+
+public class Discount implements IDiscount {
+
+    private static final long serialVersionUID = 1L;
+    private double flatAmount;
+    private double minAmount;
+
+    public Discount(double flatAmount, double minAmount) {
+        this.flatAmount = flatAmount;
+        this.minAmount = minAmount;
+    }
+
+    @Override
+    public double applyDiscount(double totalAmount) {
+        if (totalAmount >= minAmount) {
+            System.out.println("Discount of ₹" + flatAmount + " applied.");
+            return totalAmount - flatAmount;
+        }
+        System.out.println("No discount applied. Minimum order should be ₹" + minAmount);
+        return totalAmount;
+    }
+
+    public double getFlatAmount() {
+        return flatAmount;
+    }
+
+    public void setFlatAmount(double flatAmount) {
+        this.flatAmount = flatAmount;
+    }
+
+    public double getMinAmount() {
+        return minAmount;
+    }
+
+    public void setMinAmount(double minAmount) {
+        this.minAmount = minAmount;
+    }
+}

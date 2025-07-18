@@ -1,0 +1,44 @@
+package com.tss.customer;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.tss.model.FoodItem;
+
+public class CustomerCart implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    private List<FoodItem> items;
+
+    public CustomerCart() {
+        this.items = new ArrayList<>();
+    }
+
+    public void addItem(FoodItem item) {
+        items.add(item);
+        System.out.println(item.getName() + " added to cart.");
+    }
+
+    public void removeItem(FoodItem item) {
+        items.remove(item);
+        System.out.println(item.getName() + " removed from cart.");
+    }
+
+    public List<FoodItem> getItems() {
+        return items;
+    }
+
+    public double getTotal() {
+        return items.stream().mapToDouble(FoodItem::getPrice).sum();
+    }
+
+    public void clearCart() {
+        items.clear();
+        System.out.println("Cart cleared.");
+    }
+
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+}

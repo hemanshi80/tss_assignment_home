@@ -1,0 +1,16 @@
+package com.tss.customer;
+
+import java.util.List;
+
+import com.tss.model.FoodItem;
+import com.tss.model.IDiscount;
+import com.tss.orders.Order;
+
+public class CustomerPayment {
+	
+	 public static Order checkout(List<FoodItem> items, IDiscount discount, Payment paymentMethod) {
+	        Order order = new Order(items, discount, paymentMethod);
+	        return order;
+	    }
+
+}

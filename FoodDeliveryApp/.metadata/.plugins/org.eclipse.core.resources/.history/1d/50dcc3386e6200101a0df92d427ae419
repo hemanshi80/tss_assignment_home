@@ -1,0 +1,17 @@
+package com.tss.checker;
+
+public class PaymentSecurityCheck {
+
+    public static boolean isValidUPI(String upiId) {
+        return upiId != null && upiId.matches("^[\\w.-]+@[\\w]+$");
+    }
+
+    public static boolean isValidCard(String cardNumber, String cvv) {
+        return cardNumber != null && cardNumber.matches("^\\d{16}$") &&
+               cvv != null && cvv.matches("^\\d{3}$");
+    }
+
+    public static boolean isValidCashAmount(double amount) {
+        return amount > 0;
+    }
+}

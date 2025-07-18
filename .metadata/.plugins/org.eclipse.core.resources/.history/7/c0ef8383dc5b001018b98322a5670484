@@ -1,9 +1,0 @@
-package com.tss.model;
-
-public class Ostrich extends Bird{
-
-	pubic void fly() {
-		
-		System.out.println("Ostrich Fly");
-	}
-}

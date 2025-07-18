@@ -1,0 +1,29 @@
+package com.tss.customer;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class CustomerLogin {
+
+    private static Map<String, Customer> users = new HashMap<>();
+
+    public static boolean register(Customer customer) {
+        if (users.containsKey(customer.getEmail())) {
+            System.out.println("Email already registered.");
+            return false;
+        }
+        users.put(customer.getEmail(), customer);
+        System.out.println("Registration successful for " + customer.getEmail());
+        return true;
+    }
+
+    public static Customer login(String email, String password) {
+        Customer customer = users.get(email);
+        if (customer != null && customer.validate(password)) {
+            System.out.println("Login successful.");
+            return customer;
+        }
+        System.out.println("Invalid credentials.");
+        return null;
+    }
+}

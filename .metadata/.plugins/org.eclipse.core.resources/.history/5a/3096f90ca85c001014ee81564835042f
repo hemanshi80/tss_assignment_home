@@ -1,7 +1,0 @@
-package com.tss.model;
-
-public interface IFactorial {
-	
-	void Factorial();
-
-}

@@ -1,0 +1,23 @@
+package com.tss.menu;
+
+import java.util.Arrays;
+import java.util.List;
+
+import com.tss.model.FoodItem;
+
+public class ChineseMenu implements IMenu {
+
+    @Override
+    public List<FoodItem> getItems() {
+        return Arrays.asList(
+            new FoodItem("Noodles", 120, "Stir-fried noodles with vegetables and sauces."),
+            new FoodItem("Manchurian", 150, "Crispy vegetable balls in tangy soy-based gravy."),
+            new FoodItem("Spring Rolls", 100, "Fried rolls filled with mixed veggies.")
+        );
+    }
+
+    @Override
+    public String getCuisineName() {
+        return "Chinese";
+    }
+}

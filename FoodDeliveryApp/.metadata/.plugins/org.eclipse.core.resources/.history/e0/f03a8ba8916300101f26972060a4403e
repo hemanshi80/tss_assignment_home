@@ -1,0 +1,55 @@
+package com.tss.admin;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.tss.delivery.DeliveryAgent;
+import com.tss.delivery.IDeliveryAgent;
+
+
+public class DeliveryAgentManager {
+	
+	  private final List<IDeliveryAgent> agents;
+
+	    public DeliveryAgentManager() {
+	        this.agents = new ArrayList<>();
+	    }
+
+	    public void addAgent(String name) {
+	        IDeliveryAgent agent = new DeliveryAgent(name);
+	        agents.add(agent);
+	        System.out.println("Agent added: " + name);
+	    }
+
+	    public void removeAgent(String name) {
+	        boolean removed = agents.removeIf(agent -> agent.getName().equalsIgnoreCase(name));
+	        if (removed) {
+	            System.out.println("Removed agent: " + name);
+	        } else {
+	            System.out.println("Agent not found: " + name);
+	        }
+	    }
+	    
+
+	    public List<IDeliveryAgent> getAgents() {
+	        return new ArrayList<>(agents);
+	    }
+
+	    public void viewAgents() {
+	        if (agents.isEmpty()) {
+	            System.out.println("No delivery agents added.");
+	        } else {
+	            System.out.println("Delivery Agents:");
+	            for (int i = 0; i < agents.size(); i++) {
+	                System.out.printf("%d. %s\n", i + 1, agents.get(i).getName());
+	            }
+	        }
+	    }
+
+	    public IDeliveryAgent getRandomAgent() {
+	        if (agents.isEmpty()) return null;
+	        int index = (int) (Math.random() * agents.size());
+	        return agents.get(index);
+	    }
+
+}

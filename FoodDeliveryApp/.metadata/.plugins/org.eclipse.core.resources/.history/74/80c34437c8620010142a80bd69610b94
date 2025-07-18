@@ -1,0 +1,17 @@
+package com.tss.customer;
+
+import java.util.List;
+
+import com.tss.model.FoodItem;
+
+public class ViewMenu {
+
+	public static void displayMenu(List<FoodItem> menuItems) {
+        System.out.println("========= MENU =========");
+        int count = 1;
+        for (FoodItem item : menuItems) {
+            System.out.printf("%d. %s - ₹%.2f\n   %s\n", count++, item.getName(), item.getPrice(), item.getDescription());
+        }
+        System.out.println("========================");
+    }
+}

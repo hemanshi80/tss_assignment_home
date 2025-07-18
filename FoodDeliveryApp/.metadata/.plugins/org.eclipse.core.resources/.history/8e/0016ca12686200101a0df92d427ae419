@@ -1,0 +1,5 @@
+package com.tss.payment;
+
+public interface IPayment {
+
+}

@@ -1,6 +1,8 @@
 package com.tss.model;
 
-public class Book {
+import java.util.Comparator;
+
+public class Book implements Comparator{
 
 	private String bookTitle ;
 	private int bookId;
@@ -48,6 +50,12 @@ public class Book {
 		this.isIssued = isIssued;
 	}
 
+
+	@Override
+	public int compare(Object o1, Object o2) {
+		
+		return 0;
+	}
 	
 	
 }

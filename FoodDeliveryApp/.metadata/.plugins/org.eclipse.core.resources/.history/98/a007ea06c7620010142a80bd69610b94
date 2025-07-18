@@ -1,0 +1,32 @@
+package com.tss.customer;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CustomerLogin {
+
+    private static List<Customer> customers = new ArrayList<>();
+
+    public static boolean register(Customer customer) {
+        for (Customer c : customers) {
+            if (c.getEmail().equalsIgnoreCase(customer.getEmail())) {
+                System.out.println("Email already registered.");
+                return false;
+            }
+        }
+        customers.add(customer);
+        System.out.println("Registration successful for " + customer.getEmail());
+        return true;
+    }
+
+    public static Customer login(String email, String password) {
+        for (Customer customer : customers) {
+            if (customer.getEmail().equalsIgnoreCase(email) && customer.validate(password)) {
+                System.out.println("Login successful.");
+                return customer;
+            }
+        }
+        System.out.println("Invalid credentials.");
+        return null;
+    }
+}

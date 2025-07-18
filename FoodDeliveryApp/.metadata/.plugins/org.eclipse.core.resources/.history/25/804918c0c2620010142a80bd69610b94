@@ -1,0 +1,23 @@
+package com.tss.delivery;
+
+public class Swiggy implements IDeliveryAgent {
+
+    private static final long serialVersionUID = 1L;
+
+    private final String name = "Swiggy";
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void deliverOrder(String orderId) {
+        System.out.println("Swiggy is delivering Order ID: " + orderId);
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+}

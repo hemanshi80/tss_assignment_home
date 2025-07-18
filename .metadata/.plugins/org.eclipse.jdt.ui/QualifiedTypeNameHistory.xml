@@ -6,7 +6,6 @@
     <fullyQualifiedTypeName name="com.tss.model.ElectricityBill"/>
     <fullyQualifiedTypeName name="com.tss.model.Inheritance.model.Square"/>
     <fullyQualifiedTypeName name="com.tss.model.Inheritance.model.VehicleRental"/>
-    <fullyQualifiedTypeName name="java.lang.ArithmeticException"/>
     <fullyQualifiedTypeName name="java.lang.ClassNotFoundException"/>
     <fullyQualifiedTypeName name="java.lang.reflect.Method"/>
     <fullyQualifiedTypeName name="java.io.File"/>
@@ -23,4 +22,8 @@
     <fullyQualifiedTypeName name="com.tss.creational.factory.model.VehicleFactory"/>
     <fullyQualifiedTypeName name="java.util.Scanner"/>
     <fullyQualifiedTypeName name="com.tss.structural.decorator.model.CarServiceDecorator"/>
+    <fullyQualifiedTypeName name="com.tss.behavioural.observer.model.Account"/>
+    <fullyQualifiedTypeName name="java.lang.ArithmeticException"/>
+    <fullyQualifiedTypeName name="java.util.Comparator"/>
+    <fullyQualifiedTypeName name="java.util.stream.Collectors"/>
 </qualifiedTypeNameHistroy>
