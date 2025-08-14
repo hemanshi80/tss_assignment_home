@@ -26,4 +26,13 @@
     <fullyQualifiedTypeName name="java.lang.ArithmeticException"/>
     <fullyQualifiedTypeName name="java.util.Comparator"/>
     <fullyQualifiedTypeName name="java.util.stream.Collectors"/>
+    <fullyQualifiedTypeName name="com.tss.database.DBConnection"/>
+    <fullyQualifiedTypeName name="com.tss.dao.UserDatabase"/>
+    <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
+    <fullyQualifiedTypeName name="com.mysql.cj.xdevapi.Statement"/>
+    <fullyQualifiedTypeName name="java.sql.Statement"/>
+    <fullyQualifiedTypeName name="com.tss.db.UserDatabase"/>
+    <fullyQualifiedTypeName name="java.io.PrintWriter"/>
+    <fullyQualifiedTypeName name="javax.servlet.http.Cookie"/>
+    <fullyQualifiedTypeName name="com.tss.model.User"/>
 </qualifiedTypeNameHistroy>

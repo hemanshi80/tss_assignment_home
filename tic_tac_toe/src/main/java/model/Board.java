@@ -37,14 +37,14 @@ public class Board {
     }
 
     public boolean checkWinner(MarkType mark) {
-        // Check rows and columns
+        
         for (int i = 0; i < 3; i++) {
             if ((grid[i][0].getMark() == mark && grid[i][1].getMark() == mark && grid[i][2].getMark() == mark) ||
                 (grid[0][i].getMark() == mark && grid[1][i].getMark() == mark && grid[2][i].getMark() == mark)) {
                 return true;
             }
         }
-        // Check diagonals
+   
         return (grid[0][0].getMark() == mark && grid[1][1].getMark() == mark && grid[2][2].getMark() == mark) ||
                (grid[0][2].getMark() == mark && grid[1][1].getMark() == mark && grid[2][0].getMark() == mark);
     }
