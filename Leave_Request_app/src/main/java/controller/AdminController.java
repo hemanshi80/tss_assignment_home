@@ -12,8 +12,10 @@ import javax.servlet.http.HttpSession;
 
 import model.Employee;
 import model.LeaveRequest;
+import model.RejectReason;
 import service.EmployeeService;
 import service.LeaveService;
+import service.RejectReasonService;
 
 /**
  * Servlet implementation class dminController
@@ -23,6 +25,7 @@ public class AdminController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	 private LeaveService leaveService = new LeaveService();
 	    private EmployeeService employeeService = new EmployeeService();
+	    private RejectReasonService rejectReasonService = new RejectReasonService();
 
 	    @Override
 	    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -71,9 +74,29 @@ public class AdminController extends HttpServlet {
 	                }
 	            }
 	        } else if ("reject".equals(action)) {
-	            boolean updated = leaveService.updateStatus(requestId, "Rejected");
-	            if (updated) req.setAttribute("message", "Request rejected.");
-	            else req.setAttribute("error", "Failed to update request status.");
+	            String rejectReason = req.getParameter("rejectReason");
+	            if (rejectReason == null || rejectReason.trim().isEmpty()) {
+	                req.setAttribute("error", "Rejection reason is required.");
+	            } else if (rejectReason.trim().length() > 45) {
+	                req.setAttribute("error", "Rejection reason must be 45 characters or less.");
+	            } else {
+	                boolean updated = leaveService.updateStatus(requestId, "Rejected");
+	                if (updated) {
+	                    // Store rejection reason
+	                    RejectReason rr = new RejectReason();
+	                    rr.setReason(rejectReason.trim());
+	                    rr.setEmpId(lr.getEmployeeId());
+	                    rr.setLeaveId(requestId);
+	                    
+	                    if (rejectReasonService.addRejectReason(rr)) {
+	                        req.setAttribute("message", "Request rejected with reason: " + rejectReason.trim());
+	                    } else {
+	                        req.setAttribute("message", "Request rejected but failed to save reason.");
+	                    }
+	                } else {
+	                req.setAttribute("error", "Failed to update request status.");
+	                }
+	            }
 	        }
 	        req.setAttribute("requests", leaveService.getAllRequests());
 	        req.getRequestDispatcher("viewAllRequests.jsp").forward(req, resp);

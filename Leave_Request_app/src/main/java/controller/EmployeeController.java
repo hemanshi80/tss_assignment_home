@@ -40,6 +40,27 @@ public class EmployeeController extends HttpServlet {
         } else if ("myrequests".equals(action)) {
             req.setAttribute("requests", leaveService.getByEmployee(emp.getId()));
             req.getRequestDispatcher("employeeRequests.jsp").forward(req, resp);
+        } else if ("edit".equals(action)) {
+            // Handle edit leave request
+            int requestId = Integer.parseInt(req.getParameter("id"));
+            if (leaveService.canEditRequest(requestId, emp.getId())) {
+                LeaveRequest lr = leaveService.getById(requestId);
+                req.setAttribute("leaveRequest", lr);
+                req.getRequestDispatcher("editLeave.jsp").forward(req, resp);
+            } else {
+                req.setAttribute("error", "Cannot edit this leave request");
+                req.getRequestDispatcher("employeeRequests.jsp").forward(req, resp);
+            }
+        } else if ("delete".equals(action)) {
+            // Handle delete leave request
+            int requestId = Integer.parseInt(req.getParameter("id"));
+            if (leaveService.deleteLeaveRequest(requestId, emp.getId())) {
+                req.setAttribute("message", "Leave request deleted successfully");
+            } else {
+                req.setAttribute("error", "Failed to delete leave request");
+            }
+            resp.sendRedirect(req.getContextPath() + "/employee?action=myrequests");
+            return;
         } else {
             req.getRequestDispatcher("employeeDashboard.jsp").forward(req, resp);
         }
@@ -53,6 +74,50 @@ public class EmployeeController extends HttpServlet {
     	    return;
     	}
     	Employee emp = (Employee) s.getAttribute("employee");
+
+    	String action = req.getParameter("action");
+    	
+    	if ("update".equals(action)) {
+    	    // Handle update leave request
+    	    int requestId = Integer.parseInt(req.getParameter("requestId"));
+    	    if (!leaveService.canEditRequest(requestId, emp.getId())) {
+    	        req.setAttribute("error", "Cannot edit this leave request");
+    	        resp.sendRedirect(req.getContextPath() + "/employee?action=myrequests");
+    	        return;
+    	    }
+    	    
+    	    String start = req.getParameter("startDate");
+    	    String end = req.getParameter("endDate");
+    	    String reason = req.getParameter("reason");
+
+    	    Date startDate = Date.valueOf(start);
+    	    Date endDate = Date.valueOf(end);
+
+    	    // Since dates are read-only, we don't need to validate them again
+    	    // Just validate the reason
+    	    if (reason == null || reason.trim().isEmpty()) {
+    	        req.setAttribute("error", "Reason cannot be empty");
+    	        resp.sendRedirect(req.getContextPath() + "/employee?action=edit&id=" + requestId);
+    	        return;
+    	    }
+
+    	    LeaveRequest lr = new LeaveRequest();
+    	    lr.setId(requestId);
+    	    lr.setEmployeeId(emp.getId());
+    	    lr.setStartDate(startDate);
+    	    lr.setEndDate(endDate);
+    	    lr.setReason(reason.trim());
+
+    	    boolean ok = leaveService.updateLeaveRequest(lr);
+    	    if (ok) {
+    	        req.setAttribute("message", "Leave request reason updated successfully!");
+    	        resp.sendRedirect(req.getContextPath() + "/employee?action=myrequests");
+    	    } else {
+    	        req.setAttribute("error", "Failed to update leave request reason.");
+    	        resp.sendRedirect(req.getContextPath() + "/employee?action=edit&id=" + requestId);
+    	    }
+    	    return;
+    	}
 
     	String start = req.getParameter("startDate");
     	String end = req.getParameter("endDate");
@@ -75,6 +140,27 @@ public class EmployeeController extends HttpServlet {
     	    req.getRequestDispatcher("applyLeave.jsp").forward(req, resp);
     	    return;
     
+        }
+
+        // Check monthly leave limit (3 days per month) for the selected month
+        int selectedMonth = startDate.toLocalDate().getMonthValue();
+        int selectedYear = startDate.toLocalDate().getYear();
+        
+        // Get monthly usage for the selected month
+        int monthlyUsedDays = leaveService.getMonthlyLeaveDays(emp.getId(), selectedYear, selectedMonth);
+        int availableMonthlyDays = 3 - monthlyUsedDays;
+        
+        if (availableMonthlyDays < days) {
+            req.setAttribute("error", "Monthly leave limit exceeded for " + startDate.toLocalDate().getMonth().toString() + " " + selectedYear + ". You can only take " + availableMonthlyDays + " more days in that month.");
+            req.getRequestDispatcher("applyLeave.jsp").forward(req, resp);
+            return;
+        }
+
+        // Check for date conflicts with existing requests
+        if (leaveService.hasDateConflict(emp.getId(), startDate, endDate, 0)) {
+            req.setAttribute("error", "Leave request conflicts with existing approved or pending leave requests for these dates.");
+            req.getRequestDispatcher("applyLeave.jsp").forward(req, resp);
+            return;
         }
 
         if (emp.getLeaveBalance() < days) {

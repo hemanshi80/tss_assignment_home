@@ -26,7 +26,7 @@ public class RegisterController extends HttpServlet {
 	        String username = request.getParameter("username");
 	        String password = request.getParameter("password");
 	        int leaveBalance = 20;
-
+	        
 	        Employee emp = new Employee(name, username, password, leaveBalance);
 
 	        try (Connection conn = DBConnection.getConnection()) {
